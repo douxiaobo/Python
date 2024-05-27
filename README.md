@@ -22,5 +22,10 @@ baidufanyi_urllib.request.py:
 baidufanyi_Requests.py:
 learning HTTP requests by building a simple application that translates text using Baidu Translate API.
 
+render_template_flask:
+learning Jinja2 template engine by building a simple application that renders HTML templates.
+
+connectmysql:
+learning MySQL database connection by building a simple application that connects to a MySQL database.
+
 unsuccess:
-connectmysql

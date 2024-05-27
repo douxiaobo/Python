@@ -55,3 +55,7 @@ db.close()
 #   File "/Users/douxiaobo/Documents/Coding/Practice in Coding/Python/connectmysql/pymysql/lib/python3.12/site-packages/pymysql/err.py", line 150, in raise_mysql_exception
 #     raise errorclass(errno, errval)
 # pymysql.err.OperationalError: (1045, "Access denied for user 'root'@'localhost' (using password: YES)")
+
+# success
+# python3 connectmysql.py
+# Database version: 8.3.0
