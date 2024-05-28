@@ -6,6 +6,7 @@ db = pymysql.connect(
     user="root",
     password="root",
     charset='utf8'
+    cursorclass=pymysql.cursors.DictCursor
 )
 
 # 创建数据库
@@ -34,6 +35,7 @@ sql = """CREATE TABLE EMPLOYEETEST (
 #执行SQL语句
 cursor.execute(sql)
 #关闭数据库连接
+cursor.close()
 db.close()
 
 

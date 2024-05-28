@@ -19,6 +19,6 @@ try:
    # 提交到数据库执行
    db.commit()
 except:
-   db.rollback()
+   db.rollback()  # 发生错误时回滚
 # 关闭数据库连接
 db.close()

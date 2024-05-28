@@ -21,6 +21,31 @@ cursor.close()
 db.close()
 
 
+
+
+# 基本操作流程：
+
+# 开始
+
+# pymysql.connect()
+# 获取连接对象connecton
+
+# connection.cursor()
+# 获取游标对象cursor
+
+# 操作数据库
+
+# cursor.close()
+# 关闭游标
+
+# connection.close()
+# 关闭连接
+
+# 结束
+
+
+
+
 # douxiaobo@192 connectmysql % python3 -m venv pymysql
 # douxiaobo@192 connectmysql % source pymysql/bin/activate
 # (pymysql) douxiaobo@192 connectmysql % pip3 install pymysql
