@@ -2,3 +2,9 @@ Whisper/whisper/
 __pycache__/
 *.pyc
 .env
+Whisper/whisper/
+__pycache__/
+*.pyc
+.env
+whisper/
+Whisper/whisper/
