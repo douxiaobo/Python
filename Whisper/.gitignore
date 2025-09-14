@@ -1,0 +1,4 @@
+Whisper/whisper/
+__pycache__/
+*.pyc
+.env
