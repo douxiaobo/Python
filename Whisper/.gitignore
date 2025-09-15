@@ -8,3 +8,6 @@ __pycache__/
 .env
 whisper/
 Whisper/whisper/
+Whisper/whisper/lib/
+*.pyc
+__pycache__/
