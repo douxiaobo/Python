@@ -1,13 +1,1 @@
-Whisper/whisper/
-__pycache__/
-*.pyc
-.env
-Whisper/whisper/
-__pycache__/
-*.pyc
-.env
-whisper/
-Whisper/whisper/
-Whisper/whisper/lib/
-*.pyc
-__pycache__/
+whisper/lib/
