@@ -2,8 +2,6 @@ import requests
 import json
 import time
 
-
-
 # 基础配置
 OLLAMA_HOST = "http://localhost:11434"
 MODEL_NAME = "llama3"  # 替换为你使用的模型
