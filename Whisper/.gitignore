@@ -1,3 +1,11 @@
 ./whisper/lib/
 
 ./whisper/
+
+Whisper/whisper/
+
+__pycache__/
+
+*.pyc
+
+.env
