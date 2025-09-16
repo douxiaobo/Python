@@ -4,8 +4,14 @@
 
 Whisper/whisper/
 
+Whisper/whisper/
+
 __pycache__/
 
 *.pyc
 
 .env
+
+Whisper/whisper/lib/python3.9/site-packages/llvmlite/
+
+Whisper/whisper/lib/python3.9/site-packages/torch/
