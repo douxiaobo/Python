@@ -3,6 +3,7 @@ os.environ['TK_SILENCE_DEPRECATION'] = '1'
 
 # import tkinter as tk
 from tkinter import *
+from tkinter.ttk import Separator
 
 root = Tk()
 root.title("Speech to Text")
@@ -15,13 +16,22 @@ x=(screetWidth-w)//2
 y=(screetHeight-h)//2
 
 root.geometry("%dx%d+%d+%d" % (w, h, x, y))
-# root.maxsize(800, 400)
-# root.minsize(200, 100)
+root.maxsize(800, 400)
+root.minsize(200, 100)
 
-label1 = Label(root, text='测试1', bg='purple', font=('华文行楷', 20), fg='blue')
-label1.grid(row=1, column=1)
+root.configure(bg="white")
 
-print(type(label1))  # 现在会正确显示 <class 'tkinter.Label'>
+label1 = Label(root, text='speech to text', bg='yellow', font=('华文行楷', 20), fg='blue')
+# label.grid(row=0, column=1)
+label1.pack(anchor="nw")
+
+sep=Separator(root, orient=HORIZONTAL)
+sep.pack(fill=X, pady=10)
+
+label2= Label(root, text='text', bg='grey', font=('微软雅黑', 15), fg='black',height=180, width=280,justify="left")
+label2.pack(anchor="s")
+
+# print(type(label1))  # 现在会正确显示 <class 'tkinter.Label'>
 
 
 # root.config(bg="green") # 设置窗口背景颜色为绿色    无效
