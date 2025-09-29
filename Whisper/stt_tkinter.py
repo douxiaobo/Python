@@ -5,6 +5,10 @@ os.environ['TK_SILENCE_DEPRECATION'] = '1'
 from tkinter import *
 from tkinter.ttk import Separator
 
+def chat_mode():
+    print("Starting chat mode...")
+    # TODO: Implement chat mode
+
 root = Tk()
 root.title("Speech to Text")
 
@@ -21,15 +25,37 @@ root.minsize(200, 100)
 
 root.configure(bg="white")
 
-label1 = Label(root, text='speech to text', bg='yellow', font=('华文行楷', 20), fg='blue')
-# label.grid(row=0, column=1)
-label1.pack(anchor="nw")
+# 创建主框架来更好地控制布局
+main_frame = Frame(root, bg="white")
+main_frame.pack(fill=BOTH, expand=True)
 
-sep=Separator(root, orient=HORIZONTAL)
-sep.pack(fill=X, pady=10)
+# 上方框架（占总高度的10%）
+top_frame = Frame(main_frame, bg="white")
+top_frame.pack(fill=X, side=TOP)
 
-label2= Label(root, text='text', bg='grey', font=('微软雅黑', 15), fg='black',height=180, width=280,justify="left")
-label2.pack(anchor="s")
+# 使用grid布局管理器放置label1和button
+label1 = Label(top_frame, text='speech to text', bg='yellow', font=('华文行楷', 20), fg='blue')
+label1.grid(row=0, column=0, sticky=W+E, padx=3, pady=3)
+
+button = Button(top_frame, text='Start', command=chat_mode, bg='green', fg='red', font=('微软雅黑', 15))
+button.grid(row=0, column=1, sticky=W+E, padx=3, pady=3)
+
+# 配置列权重，使两个组件各占一半宽度
+top_frame.columnconfigure(0, weight=1)
+top_frame.columnconfigure(1, weight=1)
+
+# 分隔符
+sep = Separator(main_frame, orient=HORIZONTAL)
+sep.pack(fill=X, pady=3)
+
+# 下方框架（占总高度的90%）
+bottom_frame = Frame(main_frame, bg="white")
+bottom_frame.pack(fill=BOTH, expand=True)
+
+label2 = Label(bottom_frame, text='text', bg='grey', font=('微软雅黑', 15), fg='black', justify="left")
+label2.pack(fill=BOTH, expand=True, padx=3, pady=3)
+
+
 
 # print(type(label1))  # 现在会正确显示 <class 'tkinter.Label'>
 
