@@ -6,6 +6,7 @@ from tkinter import *
 from tkinter.ttk import Separator
 
 def chat_mode():
+    label2.config(text="Chat mode is not implemented yet.")
     print("Starting chat mode...")
     # TODO: Implement chat mode
 
@@ -37,7 +38,7 @@ top_frame.pack(fill=X, side=TOP)
 label1 = Label(top_frame, text='speech to text', bg='yellow', font=('华文行楷', 20), fg='blue')
 label1.grid(row=0, column=0, sticky=W+E, padx=3, pady=3)
 
-button = Button(top_frame, text='Start', command=chat_mode, bg='green', fg='red', font=('微软雅黑', 15))
+button = Button(top_frame, text='Start', command=chat_mode, bg='green',highlightbackground='blue', fg='red', font=('微软雅黑', 15))
 button.grid(row=0, column=1, sticky=W+E, padx=3, pady=3)
 
 # 配置列权重，使两个组件各占一半宽度
