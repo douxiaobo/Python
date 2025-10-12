@@ -5,58 +5,76 @@ os.environ['TK_SILENCE_DEPRECATION'] = '1'
 from tkinter import *
 from tkinter.ttk import Separator
 
-def chat_mode():
-    label2.config(text="Chat mode is not implemented yet.")
-    print("Starting chat mode...")
-    # TODO: Implement chat mode
+class SpeechToTextApp:
+    def __init__(self):
+        self.root = Tk()
+        self.root.title("Speech to Text")
+        self.screetWidth = self.root.winfo_screenwidth()
+        self.screetHeight = self.root.winfo_screenheight()
+        self.w=400
+        self.h=200
+        self.x=(self.screetWidth-self.w)//2
+        self.y=(self.screetHeight-self.h)//2
+        self.root.geometry("%dx%d+%d+%d" % (self.w, self.h, self.x, self.y))
+        self.root.maxsize(800, 400)
+        self.root.minsize(200, 100)
+        self.root.configure(bg="white")
+        
+        self.main_frame = Frame(self.root, bg="white")
+        self.main_frame.pack(fill=BOTH, expand=True)
 
-root = Tk()
-root.title("Speech to Text")
+        self.label2=None
+        self.frame()
 
-screetWidth = root.winfo_screenwidth()
-screetHeight = root.winfo_screenheight()
-w=400
-h=200
-x=(screetWidth-w)//2
-y=(screetHeight-h)//2
+    def frame(self):
+        # 创建主框架来更好地控制布局
+        main_frame = Frame(self.root, bg="white")
+        main_frame.pack(fill=BOTH, expand=True)
 
-root.geometry("%dx%d+%d+%d" % (w, h, x, y))
-root.maxsize(800, 400)
-root.minsize(200, 100)
+        # 上方框架（占总高度的10%）
+        top_frame = Frame(main_frame, bg="white")
+        top_frame.pack(fill=X, side=TOP)
 
-root.configure(bg="white")
+        # 使用grid布局管理器放置label1和button
+        label1 = Label(top_frame, text='speech to text', bg='yellow', font=('华文行楷', 20), fg='blue')
+        label1.grid(row=0, column=0, sticky=W+E, padx=3, pady=3)
 
-# 创建主框架来更好地控制布局
-main_frame = Frame(root, bg="white")
-main_frame.pack(fill=BOTH, expand=True)
+        button = Button(top_frame, text='Start', command=self.chat_mode, bg='green',highlightbackground='blue', fg='red', font=('微软雅黑', 15))
+        button.grid(row=0, column=1, sticky=W+E, padx=3, pady=3)
 
-# 上方框架（占总高度的10%）
-top_frame = Frame(main_frame, bg="white")
-top_frame.pack(fill=X, side=TOP)
+        # 配置列权重，使两个组件各占一半宽度
+        top_frame.columnconfigure(0, weight=1)
+        top_frame.columnconfigure(1, weight=1)
 
-# 使用grid布局管理器放置label1和button
-label1 = Label(top_frame, text='speech to text', bg='yellow', font=('华文行楷', 20), fg='blue')
-label1.grid(row=0, column=0, sticky=W+E, padx=3, pady=3)
+        # 分隔符
+        sep = Separator(main_frame, orient=HORIZONTAL)
+        sep.pack(fill=X, pady=3)
 
-button = Button(top_frame, text='Start', command=chat_mode, bg='green',highlightbackground='blue', fg='red', font=('微软雅黑', 15))
-button.grid(row=0, column=1, sticky=W+E, padx=3, pady=3)
+        # 下方框架（占总高度的90%）
+        bottom_frame = Frame(main_frame, bg="white")
+        bottom_frame.pack(fill=BOTH, expand=True)
 
-# 配置列权重，使两个组件各占一半宽度
-top_frame.columnconfigure(0, weight=1)
-top_frame.columnconfigure(1, weight=1)
+        label2 = Label(bottom_frame, text='text', bg='grey', font=('微软雅黑', 15), fg='black', justify="left")
+        label2.pack(fill=BOTH, expand=True, padx=3, pady=3)
+    def chat_mode(self):
+        if self.label2:
+            self.label2.config(text="Chat mode is not implemented yet.")
+        print("Starting chat mode...")
+        # TODO: Implement chat mode
 
-# 分隔符
-sep = Separator(main_frame, orient=HORIZONTAL)
-sep.pack(fill=X, pady=3)
+    def run(self):
+        try:
+            self.root.protocol("WM_DELETE_WINDOW", self.on_closing)
+            self.root.mainloop()
+        except TclError as e:
+            print(f"Tkinter error occurred: {e}")
 
-# 下方框架（占总高度的90%）
-bottom_frame = Frame(main_frame, bg="white")
-bottom_frame.pack(fill=BOTH, expand=True)
+    def on_closing(self):
+        self.root.destroy()
 
-label2 = Label(bottom_frame, text='text', bg='grey', font=('微软雅黑', 15), fg='black', justify="left")
-label2.pack(fill=BOTH, expand=True, padx=3, pady=3)
-
-
+if __name__ == "__main__":
+    app = SpeechToTextApp()
+    app.run()
 
 # print(type(label1))  # 现在会正确显示 <class 'tkinter.Label'>
 
@@ -71,7 +89,7 @@ label2.pack(fill=BOTH, expand=True, padx=3, pady=3)
 # label.pack(pady=20)
 
 # create a label widget
-root.mainloop()
+
 
 
 # export TK_SILENCE_DEPRECATION=1

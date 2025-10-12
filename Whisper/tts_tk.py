@@ -1,7 +1,24 @@
+import sounddevice as sd
 from tkinter import *
 
-root=Tk()
-root.title("Text-to-Speech")
+class VoiceRecorder:
+    def __init__(self):
+        self.recording=False
+        self.audio_data=None
+        self.fs=44100
+
+        self.root=Tk()
+        self.root.title("Text-to-Speech")
+        self.root.geometry("400x300")
+
+        self.TextL=Label(self.root,text="Enter Text Here:",font='arial 15 bold')
+        self.TextL.grid(row=0,column=0)
+
+        self.EntryL=Entry(self.root,width=50,font='arial 15 bold')
+
+
+
+
 
 TextL=Label(root,text="Enter Text Here:",font='arial 15 bold')
 TextL.grid(row=0,column=0)
@@ -24,3 +41,7 @@ def speak(text):
     # tts.save(filename)
     # playsound(filename)
     return text
+
+if __name__=='__main__':
+    app=VoiceRecorder()
+    app.run()
