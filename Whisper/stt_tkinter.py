@@ -8,12 +8,14 @@ import sounddevice as sd
 import scipy.io.wavfile as wav
 import tempfile
 import threading
-
+import whisper
+import numpy as np
 class SpeechToTextApp:
     def __init__(self):
         self.recording=False
         self.audio_file=None
         self.fs=44100
+        self.audio_data=None
 
         self.root = Tk()
         self.root.title("Speech to Text")
@@ -27,11 +29,14 @@ class SpeechToTextApp:
         self.root.maxsize(800, 400)
         self.root.minsize(200, 100)
         self.root.configure(bg="white")
+
+        # 初始化StringVar用于动态更新文本
+        self.label_text = StringVar()
+        self.label_text.set("点击开始录音...")
         
         self.main_frame = Frame(self.root, bg="white")
         self.main_frame.pack(fill=BOTH, expand=True)
 
-        self.label2=None
         self.frame()
 
     def frame(self):
@@ -62,8 +67,10 @@ class SpeechToTextApp:
         bottom_frame = Frame(main_frame, bg="white")
         bottom_frame.pack(fill=BOTH, expand=True)
 
-        label2 = Label(bottom_frame, text='text', bg='grey', font=('微软雅黑', 15), fg='black', justify="left")
-        label2.pack(fill=BOTH, expand=True, padx=3, pady=3)
+        # 使用StringVar关联的Label显示转录文本
+        label_text = Label(bottom_frame, textvariable=self.label_text, bg='grey', font=('微软雅黑', 15), fg='black', justify="left")
+        label_text.pack(fill=BOTH, expand=True, padx=3, pady=3)
+
     def chat_mode(self):
         if not self.recording:
             self.start_recording()
@@ -71,28 +78,101 @@ class SpeechToTextApp:
             self.stop_recording()
 
     def start_recording(self):
+        # 确保之前线程已经结束
+        if hasattr(self, 'record_thread') and self.record_thread.is_alive():
+            self.label_text.set("请等待当前录音结束...")
+            return
+        
         self.recording=True
         self.record_button.config(text='Recording...',bg="lightcoral")
+        self.label_text.set("正在录音...")
 
         # 在新线程中开始录音，避免阻塞GUI
         self.record_thread = threading.Thread(target=self.record_audio)
+        self.record_thread.daemon = True  # 设置为守护线程
         self.record_thread.start()
 
     def record_audio(self):
-        # 持续录音直到停止
-        self.audio_data = sd.rec(int(100 * self.fs), samplerate=self.fs, channels=1, dtype='int16')
-        sd.wait()
+        # # 持续录音直到停止
+        # self.audio_data = sd.rec(int(100 * self.fs), samplerate=self.fs, channels=1, dtype='int16')
+        # sd.wait()
+        # 开始录音并持续监听直到停止
+        self.audio_buffer = []  # 用于存储录音数据
+    
+        # 音频数据回调函数
+        # 当有新音频数据时被调用，将数据存入缓冲区
+        def callback(indata, frames, time, status):
+            if self.recording:
+                self.audio_buffer.append(indata.copy())
+    
+        try:
+            with sd.InputStream(samplerate=self.fs, channels=1, dtype='int16', callback=callback):
+                while self.recording:
+                    sd.sleep(100)  # 短暂休眠以减少CPU占用
+        
+            # 合并录音数据
+            if self.audio_buffer:
+                self.audio_data = np.concatenate(self.audio_buffer, axis=0)
+            else:
+                self.audio_data = np.array([], dtype='int16')  # 空数组作为默认值
+        except Exception as e:
+            print(f"录音过程中出现错误: {e}")
+            self.audio_data = np.array([], dtype='int16')  # 出错时设置默认值
 
     def stop_recording(self):
         self.recording = False
+
+        # 等待录音线程结束
+        if hasattr(self, 'record_thread') and self.record_thread.is_alive():
+            self.record_thread.join(timeout=2)  # 最多等待2秒
+
         self.record_button.config(text='Stop Recording',bg="lightblue")
         # temp_wav=tempfile.NamedTemporaryFile(suffix=".wav", delete=False)
         # temp_wav.write('output.wav', self.fs,self.audio_data)
         # temp_wav.close()
 
-        # 使用 scipy.io.wavfile.write 来保存音频数据
-        wav.write('output.wav', self.fs, self.audio_data)
-        print("Audio saved to output.wav")
+        
+        # 检查是否有录音数据
+        if self.audio_data is None or len(self.audio_data) == 0:
+            self.label_text.set("没有录制到音频数据")
+            return
+        
+        try:
+            # 使用 scipy.io.wavfile.write 来保存音频数据
+            wav.write('output.wav', self.fs, self.audio_data)
+            print("Audio saved to output.wav")
+            
+            # 确认whisper模块是否正确导入
+            if not hasattr(whisper, 'load_model'):
+                print("Error: whisper module does not have load_model function")
+                print("Please check your whisper installation")
+                self.label_text.set("Whisper模型加载失败")
+                return
+            
+            self.label_text.set("正在转录中...")  # 显示处理状态
+            self.root.update()  # 强制更新界面
+
+            whisper_model = whisper.load_model("small")
+            result = whisper_model.transcribe(
+                "output.wav",
+                language="zh",
+                task="transcribe",
+                temperature=0.2,
+                best_of=5,
+                beam_size=5
+            )
+            # 注意：您还需要初始化self.label_text才能使用set()方法
+            # self.label_text.set(result["text"])
+            # 显示转录结果
+            self.label_text.set(result["text"])
+            print(f"Transcription result: {result['text']}")
+        except ImportError as e:
+            print(f"Failed to import whisper: {e}")
+            self.label_text.set("导入Whisper失败")
+        except Exception as e:
+            print(f"Error during transcription: {e}")
+            self.label_text.set("转录过程中出现错误")
+    
 
     def run(self):
         try:
@@ -102,6 +182,8 @@ class SpeechToTextApp:
             print(f"Tkinter error occurred: {e}")
 
     def on_closing(self):
+        self.recording = False  # 确保停止录音
+        # 如果有其他需要清理的资源在这里处理
         self.root.destroy()
 
 if __name__ == "__main__":
