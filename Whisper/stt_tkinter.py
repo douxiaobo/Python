@@ -190,25 +190,4 @@ if __name__ == "__main__":
     app = SpeechToTextApp()
     app.run()
 
-# (whisper) douxiaobo@192 Whisper % python stt_tkinter.py
-# (whisper) douxiaobo@192 Whisper % git add .
-# (whisper) douxiaobo@192 Whisper % git commit -m "stt_tkinter.py"
-# [main 0f2b9ed7] stt_tkinter.py
-#  2 files changed, 94 insertions(+), 55 deletions(-)
-# (whisper) douxiaobo@192 Whisper % git push orign main
-# fatal: 'orign' does not appear to be a git repository
-# fatal: Could not read from remote repository.
-
-# Please make sure you have the correct access rights
-# and the repository exists.
-# (whisper) douxiaobo@192 Whisper % git push origin main
-# Enumerating objects: 9, done.
-# Counting objects: 100% (9/9), done.
-# Delta compression using up to 14 threads
-# Compressing objects: 100% (5/5), done.
-# Writing objects: 100% (5/5), 1.27 KiB | 1.27 MiB/s, done.
-# Total 5 (delta 4), reused 0 (delta 0), pack-reused 0 (from 0)
-# remote: Resolving deltas: 100% (4/4), completed with 4 local objects.
-# To github.com:douxiaobo/Python.git
-#    17100406..0f2b9ed7  main -> main
-# (whisper) douxiaobo@192 Whisper % 
+# pip3 install openai-whisper
